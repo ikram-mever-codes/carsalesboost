@@ -21,7 +21,9 @@ const Page = () => {
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
 
-    return `${day}-${month}-${year}`;
+    return `${day}-${month}-${year}` !== "NaN-NaN-NaN"
+      ? `${day}-${month}-${year}`
+      : "N/A";
   }
 
   const filterListingsByMonth = (listings) => {
@@ -102,7 +104,7 @@ const Page = () => {
                 <InfoCard
                   icon="$"
                   label="Membership Due"
-                  value={formatDate(user?.subscription.expiresAt) || "N/A"}
+                  value={formatDate(user?.subscription.endDate) || "N/A"}
                   color="text-[#E36C40]"
                 />
                 <InfoCard
@@ -141,7 +143,7 @@ const Page = () => {
           </div>
         )}
         {user.role === "admin" && (
-          <div className="w-full lg:w-[40%] h-[50vh] p-6 py-4 shadow-lg rounded-xl bg-white flex flex-col justify-between gap-6 mt-8">
+          <div className="w-full lg:w-[40%] h-[50vh] p-6 py-2 shadow-lg rounded-xl bg-white flex flex-col gap-6">
             <h2 className="text-lg font-semibold">Recent Sales</h2>
             {invoices.length !== 0 ? (
               <div className="flex flex-col gap-2 justify-start">

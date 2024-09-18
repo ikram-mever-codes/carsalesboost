@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
-export const BASE_URL = "https://api.carsalesboost.com/api";
+export const BASE_URL = "http://localhost:7000/api";
 
 export const signUp = async (firstName, lastName, email, password, router) => {
   try {
@@ -256,6 +256,7 @@ export const getAllListings = async (setListings) => {
   try {
     let response = await fetch(`${BASE_URL}/listing/all`, {
       method: "GET",
+      cache: "no-store",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",

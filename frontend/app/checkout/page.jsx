@@ -75,7 +75,7 @@ const CheckoutPage = () => {
 
     try {
       const response = await fetch(
-        "https://api.carsalesboost.com/api/subscription/buy",
+        "http://localhost:7000/api/subscription/buy",
         {
           method: "POST",
           headers: {

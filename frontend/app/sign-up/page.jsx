@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   MdEmail,
   MdLock,
@@ -15,8 +15,7 @@ import facebook from "../../assets/facebook.png";
 import { signUp } from "@/api";
 import { useGlobalContext } from "../ContextProvider";
 import { useRouter } from "next/navigation";
-
-const SignUpPage = () => {
+const Page = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -25,172 +24,216 @@ const SignUpPage = () => {
   const [lastName, setLastName] = useState("");
   const { user } = useGlobalContext();
   const router = useRouter();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      await signUp(firstName, lastName, email, password, router);
-    } catch (error) {
-      console.error("Sign-up error:", error);
-    } finally {
-      setLoading(false);
-    }
+    await signUp(firstName, lastName, email, password, router);
+    setLoading(false);
   };
-
   useEffect(() => {
-    if (user) {
-      router.push("/dashboard");
+    if (user !== null) {
+      return router.push("/dashboard");
     }
-  }, [user, router]);
-
+  }, [user]);
   return (
-    <div className="w-full h-screen flex justify-between items-center bg-white">
+    <div className="w-[100vw] h-max min-h-[100vh] flex justify-between items-center relative bg-white">
       <div
-        className="w-2/5 h-full gradient-background flex flex-col justify-between items-center p-4"
+        className="w-[40%] h-[100vh]  max-h-[100vh] gradient-background flex justify-between items-center flex-col relative"
         style={{
           borderRadius: "30px",
           borderTopLeftRadius: "0px",
           borderBottomLeftRadius: "0px",
         }}
       >
-        <div className="flex justify-center items-center py-4">
+        <div className="w-full flex justify-center items-center py-[20px] ">
           <Image
             src="/logo-main.png"
-            className="w-20"
+            className="w-[100px] h-max object-cover object-center "
             width={80}
             height={80}
             alt="CSB LOGO"
             priority
           />
-          <h1 className="font-bold text-white text-2xl tracking-wider">
+          <h1
+            className="font-bold text-white text-[25px]"
+            style={{ lineHeight: "40px", letterSpacing: "4px" }}
+          >
             CARSALESBOOST
           </h1>
         </div>
         <div>
-          <h2 className="font-bold text-2xl text-white text-left">
+          <h2
+            className="font-[700] text-[25px] text-white text-left"
+            style={{ lineHeight: "38px" }}
+          >
             Effortlessly{" "}
-            <span className="border-b border-white pb-1">Boost🚀</span>
+            <span
+              style={{ borderBottom: "1px solid white", paddingBottom: "3px" }}
+            >
+              Boost🚀
+            </span>
             <br />
             Your Car Listings
           </h2>
-          <p className="text-gray-200 mt-2">
-            Welcome back to Carsalesboost! Seamlessly manage and automate your
-            car listings. Sign in to continue!
-          </p>
+          <div
+            className="text-[#f2efef] font-[400] text-left my-[10px]"
+            style={{ lineHeight: "24px" }}
+          >
+            Welcome back to Carsalesboost! Seamlessly
+            <br /> manage and automate your car listings. Sign in to
+            <br /> continue!
+          </div>
         </div>
-        <div className="relative">
+        <div className="w-max relative left-[-80px]">
           <Image
             src={car}
             alt="Car Listings"
             width={900}
             height={300}
-            className="object-cover"
             priority
+            className="w-[100%] h-[300px] object-cover object-center relative left-[0px]"
           />
         </div>
       </div>
-      <div className="w-3/5 h-full flex justify-center items-center">
-        <div className="flex flex-col items-center gap-4 w-80">
-          <h2 className="font-bold text-3xl">Sign Up to CarSalesBoost!</h2>
-          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-            <div className="flex items-center bg-gray-200 p-2 rounded-full">
-              <MdPerson className="text-xl" />
+      <div className="w-[60%] h-full flex justify-center items-center ">
+        <div className="flex justify-between items-center flex-col h-[90vh] gap-[10px] ">
+          <div className="font-[700] text-[30px]">
+            Sign Up to CarSalesBoost!
+          </div>
+          <form
+            className="flex justify-center items-center w-[20rem] h-full flex-col gap-[20px]"
+            onSubmit={handleSubmit}
+          >
+            <div className="flex justify-start items-center bg-[#e3e1e1] gap-[5px] w-[20rem] h-[3rem] rounded-full p-[10px] px-[15px]">
+              <MdPerson className="text-[25px]" />
               <input
                 required
                 value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                onChange={(e) => {
+                  setFirstName(e.target.value);
+                }}
                 type="text"
                 placeholder="First Name"
-                className="w-full bg-transparent border-none text-lg outline-none"
+                className="w-full h-[3rem] bg-transparent border-none outline-none text-[18px]"
               />
             </div>
-            <div className="flex items-center bg-gray-200 p-2 rounded-full">
-              <MdPerson className="text-xl" />
+            <div className="flex justify-start items-center bg-[#e3e1e1] gap-[5px] w-[20rem] h-[3rem] rounded-full p-[10px] px-[15px]">
+              <MdPerson className="text-[25px]" />
               <input
-                required
                 value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                onChange={(e) => {
+                  setLastName(e.target.value);
+                }}
+                required
                 type="text"
                 placeholder="Last Name"
-                className="w-full bg-transparent border-none text-lg outline-none"
+                className="w-full h-[3rem] bg-transparent border-none outline-none text-[18px]"
               />
             </div>
-            <div className="flex items-center bg-gray-200 p-2 rounded-full">
-              <MdEmail className="text-xl" />
+            <div className="flex justify-start items-center bg-[#e3e1e1] gap-[5px] w-[20rem] h-[3rem] rounded-full p-[10px] px-[15px]">
+              <MdEmail className="text-[25px]" />
               <input
-                required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+                required
                 type="email"
                 placeholder="Email"
-                className="w-full bg-transparent border-none text-lg outline-none"
+                className="w-full h-[3rem] bg-transparent border-none outline-none text-[18px]"
               />
             </div>
-            <div className="flex items-center bg-gray-200 p-2 rounded-full">
-              <MdLock className="text-xl" />
+            <div className="flex justify-start items-center bg-[#e3e1e1] gap-[5px] w-[20rem] h-[3rem] rounded-full p-[10px] px-[15px]">
+              <MdLock className="text-[25px]" />
               <input
-                required
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+                required
                 type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                className="w-full bg-transparent border-none text-lg outline-none"
+                placeholder="password"
+                className="w-full h-[3rem] bg-transparent border-none outline-none text-[18px]"
               />
               <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                aria-label={showPassword ? "Hide password" : "Show password"}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowPassword(!showPassword);
+                }}
               >
                 {showPassword ? (
-                  <MdVisibilityOff className="text-lg" />
+                  <MdVisibilityOff className="text-[20px]" />
                 ) : (
-                  <MdVisibility className="text-lg" />
+                  <MdVisibility className="text-[20px]" />
                 )}
               </button>
             </div>
             <button
               disabled={loading}
               type="submit"
-              className="button-gradient w-full h-12 rounded-md text-white font-semibold text-lg"
+              className="disabled:cursor-not-allowed button-gradient w-full h-[3rem] rounded-md text-white font-[600] text-[20px]"
             >
               {loading ? "Loading..." : "Sign Up"}
             </button>
           </form>
-          <div className="flex flex-col items-center gap-2">
-            <div className="flex items-center w-60">
-              <div className="bg-gray-400 h-px w-1/4"></div>
-              <span className="w-1/2 text-center text-sm font-medium">
+          <div className="flex justify-start items-center flex-col gap-[10px]">
+            <div className="flex justify-center items-center w-[15rem]">
+              <div className="bg-[#818181] h-[1px] w-[25%]"></div>
+              <div className="w-[50%] text-center font-[500] text-[14px]">
                 Or Register with
-              </span>
-              <div className="bg-gray-400 h-px w-1/4"></div>
+              </div>
+              <div className="bg-[#818181] h-[1px] w-[25%]"></div>
             </div>
-            <div className="flex gap-4">
-              <button className="border border-black w-10 h-10 rounded-full flex justify-center items-center">
+            <div className="flex justify-center items-center gap-[20px]">
+              <button
+                style={{
+                  border: "1px solid black",
+                  width: "40px",
+                  height: "40px",
+                  overflow: "hidden",
+                  borderRadius: "50px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <Image
                   src={google}
-                  width={30}
-                  height={30}
-                  className="object-cover"
+                  width={35}
+                  height={35}
+                  className="object-cover object-center"
                   alt="Google"
                 />
               </button>
-              <button className="border border-black w-10 h-10 rounded-full flex justify-center items-center">
+              <button
+                style={{
+                  border: "1px solid black",
+                  width: "40px",
+                  height: "40px",
+                  overflow: "hidden",
+                  borderRadius: "50px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <Image
                   src={facebook}
-                  width={30}
-                  height={30}
-                  className="object-cover"
-                  alt="Facebook"
+                  width={100}
+                  height={100}
+                  className="object-cover object-center w-full h-full"
+                  alt="Google"
                 />
               </button>
             </div>
           </div>
-          <div className="text-center">
-            <span className="font-medium">Already have an Account? </span>
-            <Link className="text-[#E36C40] font-medium" href="/login">
-              Sign In now
-            </Link>
+          <div className="w-full flex justify-center items-center gap-[5px]">
+            <div className="font-[500]">
+              Already have an Account?{" "}
+              <Link className="text-[#E36C40] font-500" href={"/login"}>
+                Sign In now
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -198,4 +241,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default Page;

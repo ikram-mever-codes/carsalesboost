@@ -45,7 +45,7 @@ export const createListing = async (req, res, next) => {
 
 export const getAllListings = async (req, res, next) => {
   try {
-    let listings = await Listing.find();
+    let listings = await Listing.find({ userId: req.user._id });
 
     if (listings.length === 0) {
       return next(new errorHandler("No Listings Found!", 404));
